@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BUYQuick - Variant Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="bg-gray-800 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">BUYQuick</h1>
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="index.html#products" class="hover:underline">Products</a></li>
+          <li><a href="index.html#testimonials" class="hover:underline">Testimonials</a></li>
+          <li><a href="index.html#contact" class="hover:underline">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto p-4">
+    <section id="variant-details" class="my-8">
+      <h2 id="variant-title" class="text-xl font-bold mb-4"></h2>
+      <img id="variant-image" src="" alt="Variant Image" class="mb-4 rounded-lg shadow-lg">
+      <p id="variant-description" class="mb-4"></p>
+      <a id="buy-now-link" href="#" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Buy Now</a>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-4 text-center">
+    <p>&copy; 2024 BUYQuick. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const productName = urlParams.get('product');
+    const variantSpec = urlParams.get('variant');
+
+    const variantTitle = document.getElementById('variant-title');
+    const variantImage = document.getElementById('variant-image');
+    const variantDescription = document.getElementById('variant-description');
+    const buyNowLink = document.getElementById('buy-now-link');
+
+    if (productName && variantSpec) {
+      variantTitle.textContent = `${productName} - ${variantSpec}`;
+      const formattedProductName = productName.toLowerCase().replace(/\s+/g, '-');
+      const formattedVariantSpec = variantSpec.toLowerCase().replace(/\s+/g, '-');
+      variantImage.src = `images/${formattedProductName}-${formattedVariantSpec}.jpeg`;
+      variantImage.alt = `${productName} ${variantSpec}`;
+      variantDescription.textContent = `Details and description for ${productName} with ${variantSpec}.`;
+      buyNowLink.href = `checkout.html?product=${productName}&variant=${variantSpec}`;
+    } else {
+      variantTitle.textContent = 'Variant not found';
+      variantDescription.textContent = 'The selected product variant could not be found. Please go back and select a different variant.';
+    }
+  </script>
+</body>
+</html>

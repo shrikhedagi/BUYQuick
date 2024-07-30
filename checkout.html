@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BUYQuick - Checkout</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="bg-gray-800 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">BUYQuick</h1>
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="index.html#products" class="hover:underline">Products</a></li>
+          <li><a href="index.html#testimonials" class="hover:underline">Testimonials</a></li>
+          <li><a href="index.html#contact" class="hover:underline">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto p-4">
+    <section id="checkout" class="my-8">
+      <h2 class="text-xl font-bold mb-4">Checkout</h2>
+      <form class="space-y-4">
+        <div>
+          <label for="name" class="block">Name:</label>
+          <input type="text" id="name" class="border rounded-lg px-2 py-1 w-full" required>
+        </div>
+        <div>
+          <label for="email" class="block">Email:</label>
+          <input type="email" id="email" class="border rounded-lg px-2 py-1 w-full" required>
+        </div>
+        <div>
+          <label for="address" class="block">Address:</label>
+          <textarea id="address" class="border rounded-lg px-2 py-1 w-full" rows="4" required></textarea>
+        </div>
+        <div>
+          <label for="payment-method" class="block">Payment Method:</label>
+          <select id="payment-method" class="border rounded-lg px-2 py-1 w-full" required>
+            <option value="">Select a payment method</option>
+            <option value="credit-card">Credit Card</option>
+            <option value="debit-card">Debit Card</option>
+            <option value="paypal">PayPal</option>
+          </select>
+        </div>
+        <div id="credit-card-info" class="hidden">
+          <div>
+            <label for="card-number" class="block">Card Number:</label>
+            <input type="text" id="card-number" class="border rounded-lg px-2 py-1 w-full" required>
+          </div>
+          <div>
+            <label for="expiry-date" class="block">Expiry Date:</label>
+            <input type="text" id="expiry-date" class="border rounded-lg px-2 py-1 w-full" required>
+          </div>
+          <div>
+            <label for="cvv" class="block">CVV:</label>
+            <input type="text" id="cvv" class="border rounded-lg px-2 py-1 w-full" required>
+          </div>
+        </div>
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Place Order</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-4 text-center">
+    <p>&copy; 2024 BUYQuick. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const paymentMethodSelect = document.getElementById('payment-method');
+    const creditCardInfo = document.getElementById('credit-card-info');
+
+    paymentMethodSelect.addEventListener('change', function() {
+      if (this.value === 'credit-card' || this.value === 'debit-card') {
+        creditCardInfo.classList.remove('hidden');
+      } else {
+        creditCardInfo.classList.add('hidden');
+      }
+    });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const productName = urlParams.get('product');
+    const variantSpec = urlParams.get('variant');
+
+    if (productName && variantSpec) {
+      const checkoutTitle = document.createElement('h3');
+      checkoutTitle.textContent = `You are purchasing: ${productName} - ${variantSpec}`;
+      checkoutTitle.className = 'text-lg font-bold mb-4';
+      const checkoutSection = document.getElementById('checkout');
+      checkoutSection.insertBefore(checkoutTitle, checkoutSection.firstChild);
+    }
+  </script>
+</body>
+</html>

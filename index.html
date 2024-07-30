@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BUYQuick</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="bg-gray-800 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">BUYQuick</h1>
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="#products" class="hover:underline">Products</a></li>
+          <li><a href="#testimonials" class="hover:underline">Testimonials</a></li>
+          <li><a href="#contact" class="hover:underline">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto p-4">
+    <section id="products" class="my-8">
+      <h2 class="text-xl font-bold mb-4">Our Products</h2>
+      <div id="product-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Product sections will be dynamically injected here -->
+      </div>
+      <div id="pagination-controls" class="flex justify-center mt-4">
+        <!-- Pagination controls will be dynamically injected here -->
+      </div>
+    </section>
+
+    <section id="testimonials" class="my-8">
+      <h2 class="text-xl font-bold mb-4">Customer Testimonials</h2>
+      <div class="space-y-4">
+        <blockquote class="border-l-4 border-blue-500 pl-4">
+          <p class="italic">"Amazing product and fantastic service!" - Jane Doe</p>
+        </blockquote>
+        <blockquote class="border-l-4 border-blue-500 pl-4">
+          <p class="italic">"The best laptops I have ever used." - John Smith</p>
+        </blockquote>
+      </div>
+    </section>
+
+    <section id="contact" class="my-8">
+      <h2 class="text-xl font-bold mb-4">Contact Us</h2>
+      <form class="space-y-4">
+        <div>
+          <label for="name" class="block">Name:</label>
+          <input type="text" id="name" class="border rounded-lg px-2 py-1 w-full" required>
+        </div>
+        <div>
+          <label for="email" class="block">Email:</label>
+          <input type="email" id="email" class="border rounded-lg px-2 py-1 w-full" required>
+        </div>
+        <div>
+          <label for="message" class="block">Message:</label>
+          <textarea id="message" class="border rounded-lg px-2 py-1 w-full" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-4 text-center">
+    <p>&copy; 2024 BUYQuick. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const products = [
+      {
+        name: "Apple M1",
+        image: "images/apple-m1.jpeg", // Verify this path
+        variants: [
+          { spec: "8GB RAM, 128GB SSD", price: "$999", link: "variant.html?product=Apple%20M1&variant=8GB%20128GB" },
+          { spec: "8GB RAM, 256GB SSD", price: "$1199", link: "variant.html?product=Apple%20M1&variant=8GB%20256GB" },
+          { spec: "16GB RAM, 512GB SSD", price: "$1399", link: "variant.html?product=Apple%20M1&variant=16GB%20512GB" },
+        ]
+      },
+      {
+        name: "Apple M2",
+        image: "images/apple-m2.jpeg", // Verify this path
+        variants: [
+          { spec: "8GB RAM, 128GB SSD", price: "$1099", link: "variant.html?product=Apple%20M2&variant=8GB%20128GB" },
+          { spec: "8GB RAM, 256GB SSD", price: "$1299", link: "variant.html?product=Apple%20M2&variant=8GB%20256GB" },
+          { spec: "16GB RAM, 512GB SSD", price: "$1499", link: "variant.html?product=Apple%20M2&variant=16GB%20512GB" },
+        ]
+      },
+      {
+        name: "Apple M3",
+        image: "images/apple-m3.jpeg", // Verify this path
+        variants: [
+          { spec: "8GB RAM, 128GB SSD", price: "$1199", link: "variant.html?product=Apple%20M3&variant=8GB%20128GB" },
+          { spec: "8GB RAM, 256GB SSD", price: "$1399", link: "variant.html?product=Apple%20M3&variant=8GB%20256GB" },
+          { spec: "16GB RAM, 512GB SSD", price: "$1599", link: "variant.html?product=Apple%20M3&variant=16GB%20512GB" },
+        ]
+      }
+    ];
+
+    const variantsPerPage = 1;
+
+    function renderProducts() {
+      const productContainer = document.getElementById('product-container');
+      productContainer.innerHTML = '';
+
+      products.forEach((product, productIndex) => {
+        const productDiv = document.createElement('div');
+        productDiv.className = 'border rounded-lg p-4 shadow-lg';
+        
+        // Add product image
+        const productImage = document.createElement('img');
+        productImage.src = product.image;
+        productImage.alt = product.name;
+        productImage.className = 'mb-4 w-full h-auto rounded-lg';
+        
+        // Add product name
+        const productTitle = document.createElement('h3');
+        productTitle.className = 'text-lg font-semibold';
+        productTitle.textContent = product.name;
+
+        // Add image and title to product div
+        productDiv.appendChild(productImage);
+        productDiv.appendChild(productTitle);
+
+        const pagination = document.createElement('div');
+        pagination.id = `pagination-${productIndex}`;
+        pagination.className = 'flex justify-center mt-4';
+
+        productDiv.appendChild(pagination);
+
+        productContainer.appendChild(productDiv);
+
+        renderVariants(productIndex, 1);
+      });
+    }
+
+    function renderVariants(productIndex, page) {
+      const product = products[productIndex];
+      const start = (page - 1) * variantsPerPage;
+      const end = start + variantsPerPage;
+      const paginatedVariants = product.variants.slice(start, end);
+
+      const productDiv = document.getElementById(`pagination-${productIndex}`).parentElement;
+      productDiv.querySelectorAll('p, a').forEach(e => e.remove());
+
+      paginatedVariants.forEach(variant => {
+        const variantP = document.createElement('p');
+        variantP.className = 'mb-2';
+        variantP.textContent = `${variant.spec} - ${variant.price}`;
+        const variantA = document.createElement('a');
+        variantA.href = variant.link;
+        variantA.className = 'bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600';
+        variantA.textContent = 'Buy Now';
+        productDiv.appendChild(variantP);
+        productDiv.appendChild(variantA);
+      });
+
+      renderPaginationControls(productIndex, page);
+    }
+
+    function renderPaginationControls(productIndex, currentPage) {
+  const product = products[productIndex];
+  const totalPages = Math.ceil(product.variants.length / variantsPerPage);
+  const paginationDiv = document.getElementById(`pagination-${productIndex}`);
+  paginationDiv.innerHTML = '';
+
+  for (let i = 1; i <= totalPages; i++) {
+    const pageButton = document.createElement('button');
+    pageButton.className = `py-2 px-4 mx-1 ${i === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`;
+    pageButton.textContent = i;
+    pageButton.onclick = () => renderVariants(productIndex, i);
+    paginationDiv.appendChild(pageButton);
+  }
+}
+
+renderProducts();
+</script>
+</body>
+</html> 
